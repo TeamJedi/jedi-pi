@@ -1,0 +1,2 @@
+all:
+	./ethernet-gadget.sh
