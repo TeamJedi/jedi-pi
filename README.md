@@ -34,3 +34,12 @@ WARNING: Choose the `of=` device carefully. There is no recovery from this actio
 
 When this command finishes, it should be safe to eject the card and put it back in your Raspberry PI Zero.
 
+## Initially tethering out through OS/X
+
+If you enable OS/X Internet Sharing, the raspberry pi zero has a small problem with ipv6 that causes it to not be able to get out correctly.
+
+To fix this, edit `/etc/modprobe.d/ipv6.conf` and uncomment the `alias ipv6 off` and reboot the raspberry pi zero.
+
+    sudo sed -i -e 's/#alias ipv6 off/alias ipv6 off/' /etc/modules.d/ipv6.conf
+    sudo shutdown -r now
+
