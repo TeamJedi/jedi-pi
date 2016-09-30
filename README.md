@@ -2,9 +2,12 @@
 
 ## ethernet-gadget.sh
 
-This script attempts to follow the ethernet gadget guide on AdaFruit:
+This script attempts to follow the PI zero OTG / ethernet gadget guide:
 
 https://learn.adafruit.com/turning-your-raspberry-pi-zero-into-a-usb-gadget/ethernet-gadget
+http://blog.gbaman.info/?p=791
+https://gist.github.com/gbaman/50b6cca61dd1c3f88f41
+https://gist.github.com/gbaman/975e2db164b3ca2b51ae11e45e8fd40a
 
 After running this script, you will have an img file that needs to be written to the micro-SD card of your choosing.
 
@@ -30,5 +33,4 @@ Now we can _OVERWRITE_ the micro-SD card with the `dd` command.
 WARNING: Choose the `of=` device carefully. There is no recovery from this action.
 
 When this command finishes, it should be safe to eject the card and put it back in your Raspberry PI Zero.
-
 
