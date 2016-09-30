@@ -12,7 +12,7 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins
+sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins libpam-systemd
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 
@@ -39,17 +39,20 @@ sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins
 # Initialize ipfs if necessary
 [ -f ~/.ipfs ] || ipfs init
 
-touch ipfs.log
-tail -f ipfs.log &
+# Disable things we don't need (cron, triggerhappy)
+sudo systemctl disable cron.service
+systemctl --user stop triggerhappy.service
+systemctl --user disable triggerhappy.service
 
-# Make sure ipfs daemon is running
-while ! </dev/tcp/127.0.0.1/5001 ; do
-	nohup ipfs daemon 2>&1 > ipfs.log &
-       	sleep 60
-done
+# Make sure this pi user has access to manage user services
+sudo loginctl enable-linger pi
+systemctl --user status || shutdown -r now
+
+systemctl --user enable ipfs
+systemctl --user start ipfs
 
 sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_httpinfo.so.0.1"/' /etc/olsrd/olsrd.conf
 sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_jsoninfo.so.0.0"/' /etc/olsrd/olsrd.conf
 
-sudo systemctl stop cron.service
+
 
