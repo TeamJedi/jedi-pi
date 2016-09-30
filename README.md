@@ -43,3 +43,7 @@ To fix this, edit `/etc/modprobe.d/ipv6.conf` and uncomment the `alias ipv6 off`
     sudo sed -i -e 's/#alias ipv6 off/alias ipv6 off/' /etc/modules.d/ipv6.conf
     sudo shutdown -r now
 
+## Applying the overlay
+
+The `apply.sh` script can be used to copy up the `overlay/` contents.
+
