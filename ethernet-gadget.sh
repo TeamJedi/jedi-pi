@@ -34,7 +34,7 @@ cd $VOLUME
 grep dtoverlay=dwc2 config.txt > /dev/null 2>&1 || echo "dtoverlay=dwc2" >> config.txt
 grep modules-load=dwc2,g_ether cmdline.txt > /dev/null 2>&1 || (
   CMDLINE=$(cat cmdline.txt)
-  echo "${CMDLINE} modules-load=dwc2,g_ether" > cmdline.txt
+  echo "${CMDLINE}" | sed -e 's/rootwait/rootwait modules-load=dwc2,g_ether/' > cmdline.txt
 )
 
 cd $DIR
