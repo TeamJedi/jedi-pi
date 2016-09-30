@@ -12,7 +12,7 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y rfc5766-turn-server nodejs
+sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 
@@ -47,4 +47,9 @@ while ! </dev/tcp/127.0.0.1/5001 ; do
 	nohup ipfs daemon 2>&1 > ipfs.log &
        	sleep 60
 done
+
+sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_httpinfo.so.0.1"/' /etc/olsrd/olsrd.conf
+sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_jsoninfo.so.0.0"/' /etc/olsrd/olsrd.conf
+
+sudo systemctl stop cron.service
 
