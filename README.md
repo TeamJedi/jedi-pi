@@ -1,4 +1,4 @@
-# pi-zero
+# jedi-pi
 
 ## ethernet-gadget.sh
 
