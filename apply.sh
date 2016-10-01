@@ -26,4 +26,5 @@ ssh pi@raspberrypi.local "bash -c 'which rsync || ( sudo apt-get update && sudo 
 
 # Copy the files
 rsync -aq --rsync-path='sudo rsync' --chown pi:pi overlay/home/pi/ pi@raspberrypi.local:.
+rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/lib/ pi@raspberrypi.local:/lib/
 rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/etc/ pi@raspberrypi.local:/etc/
