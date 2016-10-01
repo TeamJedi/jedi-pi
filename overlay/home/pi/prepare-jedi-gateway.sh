@@ -37,16 +37,17 @@ sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins li
 [ -f /usr/local/bin/ipget ] || sudo mv -f ipget/ipget /usr/local/bin/ipget
 
 # Initialize ipfs if necessary
-[ -f ~/.ipfs ] || ipfs init
+[ -d ~/.ipfs ] || ipfs init
 
 # Disable things we don't need (cron, triggerhappy)
+sudo systemctl stop cron.service
 sudo systemctl disable cron.service
-systemctl --user stop triggerhappy.service
-systemctl --user disable triggerhappy.service
+sudo systemctl stop triggerhappy.service
+sudo systemctl disable triggerhappy.service
 
 # Make sure this pi user has access to manage user services
 sudo loginctl enable-linger pi
-systemctl --user status || shutdown -r now
+#systemctl --user status || shutdown -r now
 
 systemctl --user enable ipfs
 systemctl --user start ipfs
@@ -54,5 +55,7 @@ systemctl --user start ipfs
 sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_httpinfo.so.0.1"/' /etc/olsrd/olsrd.conf
 sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_jsoninfo.so.0.0"/' /etc/olsrd/olsrd.conf
 
+systemctl enable olsrd
+systemctl start olsrd
 
 
