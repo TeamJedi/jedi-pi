@@ -1,5 +1,7 @@
 #!/bin/bash -e
 
+host=${1:-raspberrypi}
+
 need='3.1'
 have="$(rsync --version | head -1 | awk '{print $3}' | cut -d. -f1-2)"
 newer="$(echo -e "$have\n$need" | sed '/^$/d' | sort -nr | head -1)"
@@ -19,12 +21,12 @@ fi
 set -x
 
 # Copy up your creds
-ssh-copy-id pi@raspberrypi.local
+ssh-copy-id pi@${host}.local
 
 # Make sure rsync is on the pi
-ssh pi@raspberrypi.local "bash -c 'which rsync || ( sudo apt-get update && sudo apt-get install -y rsync )'"
+ssh pi@${host}.local "bash -c 'which rsync || ( sudo apt-get update && sudo apt-get install -y rsync )'"
 
 # Copy the files
-rsync -aq --rsync-path='sudo rsync' --chown pi:pi overlay/home/pi/ pi@raspberrypi.local:.
-rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/lib/ pi@raspberrypi.local:/lib/
-rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/etc/ pi@raspberrypi.local:/etc/
+rsync -aq --rsync-path='sudo rsync' --chown pi:pi overlay/home/pi/ pi@${host}.local:.
+rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/lib/ pi@${host}.local:/lib/
+rsync -aq --rsync-path='sudo rsync' --chown root:root overlay/etc/ pi@${host}.local:/etc/
