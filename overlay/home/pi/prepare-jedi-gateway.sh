@@ -12,7 +12,11 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins libpam-systemd
+sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse
+
+if [ -f /etc/olsrd/olsrd.conf ]; then
+  sudo cp -f /etc/olsrd/olsrd.conf.overlay /etc/olsrd/olsrd.conf
+fi
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 

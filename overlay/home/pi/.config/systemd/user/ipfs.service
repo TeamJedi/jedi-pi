@@ -2,7 +2,7 @@
 Description=IPFS daemon
 
 [Service]
-ExecStart=/usr/local/bin/ipfs daemon
+ExecStart=/usr/local/bin/ipfs daemon --migrate --enable-gc --manage-fdlimit
 Restart=on-failure
 
 [Install]
