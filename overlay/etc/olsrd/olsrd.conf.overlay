@@ -23,8 +23,8 @@ IpcConnect
 LoadPlugin "olsrd_httpinfo.so.0.1"
 {
     PlParam     "Host"   "127.0.0.1"
-    PlParam     "Net"    "104.0.0.0 255.255.0.0"
     PlParam     "Net"    "192.168.0.0 255.255.0.0"
+    PlParam     "Net"    "169.254.0.0 255.255.0.0"
 }
 LoadPlugin "olsrd_txtinfo.so.0.1"
 {
@@ -43,6 +43,6 @@ InterfaceDefaults
     HnaInterval            10.0
     HnaValidityTime        300.0
 }
-Interface "<OLSRd-Interface1>" "<OLSRd-Interface2>"
+Interface "usb0" "wlan0"
 {
 }
