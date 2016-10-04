@@ -9,6 +9,7 @@ Pollrate    0.1
 TcRedundancy    2
 MprCoverage    5
 UseHysteresis    no
+RtTableDefault 100
 Hna4
 {
 }
@@ -26,9 +27,21 @@ LoadPlugin "olsrd_httpinfo.so.0.1"
     PlParam     "Net"    "192.168.0.0 255.255.0.0"
     PlParam     "Net"    "169.254.0.0 255.255.0.0"
 }
+LoadPlugin "olsrd_dot_draw.so.0.3"
+{
+    PlParam     "port"   "2004"
+    PlParam     "Accept" "0.0.0.0"
+}
 LoadPlugin "olsrd_txtinfo.so.0.1"
 {
-    PlParam     "Accept"   "127.0.0.1"
+    PlParam     "port"   "2006"
+    PlParam     "accept" "0.0.0.0"
+}
+LoadPlugin "olsrd_jsoninfo.so.0.0"
+{
+    PlParam     "port"   "9090"
+    PlParam     "accept" "0.0.0.0"
+    PlParam     "UUIDFile" "/etc/olsrd/olsrd.uuid"
 }
 InterfaceDefaults
 {

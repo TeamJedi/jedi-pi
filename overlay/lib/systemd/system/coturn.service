@@ -1,0 +1,10 @@
+[Unit]
+Description=COTURN RFC5766 TURN Service
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/turnserver -l stdout
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -12,11 +12,7 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y git rfc5766-turn-server nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse
-
-if [ -f /etc/olsrd/olsrd.conf ]; then
-  sudo cp -f /etc/olsrd/olsrd.conf.overlay /etc/olsrd/olsrd.conf
-fi
+sudo -E apt-get install -y git nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse uuid coturn
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 
@@ -53,13 +49,24 @@ sudo systemctl disable triggerhappy.service
 sudo loginctl enable-linger pi
 #systemctl --user status || shutdown -r now
 
+# Prepare ipfs
 systemctl --user enable ipfs
 systemctl --user start ipfs
 
-sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_httpinfo.so.0.1"/' /etc/olsrd/olsrd.conf
-sudo sed -i -e 's/#LoadPlugin "olsrd_httpinfo.so.0.1"/LoadPlugin "olsrd_jsoninfo.so.0.0"/' /etc/olsrd/olsrd.conf
+# Prepare olsrd
+sudo cp -f /etc/olsrd/olsrd.conf.overlay /etc/olsrd/olsrd.conf
+
+if [ ! -f /etc/olsrd/olsrd.uuid ]; then
+  uuid > /etc/olsrd/olsrd.uuid
+fi
 
 systemctl enable olsrd
 systemctl start olsrd
+
+# Prepare coturn
+sudo cp -f /etc/default/coturn.overlay /etc/default/coturn
+
+systemctl enable coturn
+systemctl start coturn
 
 
