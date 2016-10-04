@@ -56,17 +56,15 @@ systemctl --user start ipfs
 # Prepare olsrd
 sudo cp -f /etc/olsrd/olsrd.conf.overlay /etc/olsrd/olsrd.conf
 
-if [ ! -f /etc/olsrd/olsrd.uuid ]; then
-  uuid > /etc/olsrd/olsrd.uuid
-fi
+ipfs id | jq -r .ID | sudo tee /etc/olsrd/olsrd.uuid
 
-systemctl enable olsrd
-systemctl start olsrd
+sudo systemctl enable olsrd || true
+sudo systemctl start olsrd
 
 # Prepare coturn
 sudo cp -f /etc/default/coturn.overlay /etc/default/coturn
 
-systemctl enable coturn
-systemctl start coturn
+sudo systemctl enable coturn || true
+sudo systemctl start coturn
 
 
