@@ -47,3 +47,7 @@ To fix this, edit `/etc/modprobe.d/ipv6.conf` and uncomment the `alias ipv6 off`
 
 The `apply.sh` script can be used to copy up the `overlay/` contents.
 
+## 3d Box Assembly
+
+The [3d](3d/) folder contains the Fusion 3d box assembly for the Jedi device.
+
