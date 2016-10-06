@@ -12,7 +12,7 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y git nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse uuid coturn
+sudo -E apt-get install -y git nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse uuid coturn npm
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 
@@ -66,5 +66,4 @@ sudo cp -f /etc/default/coturn.overlay /etc/default/coturn
 
 sudo systemctl enable coturn || true
 sudo systemctl start coturn
-
 
