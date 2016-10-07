@@ -1,0 +1,6 @@
+auto wlan0
+iface wlan0 inet ipv4ll
+	wireless-essid jedi
+	wireless-mode ad-hoc
+	wireless-channel 1
+

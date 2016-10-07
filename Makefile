@@ -1,2 +1,3 @@
 all:
-	./ethernet-gadget.sh
+	./ethernet-host-mode.sh
+	./ethernet-device-mode.sh

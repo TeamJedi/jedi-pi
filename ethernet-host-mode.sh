@@ -3,9 +3,11 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
 RASBIAN_ZIP=2016-09-23-raspbian-jessie-lite.zip
-RASBIAN_IMG=2016-09-23-raspbian-jessie-lite.img
+RASBIAN_SRCIMG=2016-09-23-raspbian-jessie-lite.img
 RASBIAN_URL=http://downloads.raspberrypi.org/raspbian_lite/images/raspbian_lite-2016-09-28/${RASBIAN_ZIP}
 RASBIAN_SHA1=3a34e7b05e1e6e9042294b29065144748625bea8
+
+RASBIAN_IMG=${RASBIAN_SRCIMG}+host-mode.img
 
 [ -f "${RASBIAN_ZIP}" ] || wget "${RASBIAN_URL}"
 
@@ -13,7 +15,8 @@ ZIP_SHA1="$(openssl sha1 ${RASBIAN_ZIP} | awk '{print $2}')"
 
 [ "${ZIP_SHA1}" = "${RASBIAN_SHA1}" ]
 
-[ -f "${RASBIAN_IMG}" ] || unzip ${RASBIAN_ZIP}
+[ -f "${RASBIAN_SRCIMG}" ] || unzip ${RASBIAN_ZIP}
+[ -f "${RASBIAN_IMG}" ] ||  cp ${RASBIAN_SRCIMG} ${RASBIAN_IMG}
 
 OS="$(uname -s)"
 
@@ -31,10 +34,9 @@ esac
 
 cd $VOLUME
 
-grep dtoverlay=dwc2 config.txt > /dev/null 2>&1 || echo "dtoverlay=dwc2" >> config.txt
-grep modules-load=dwc2,g_ether cmdline.txt > /dev/null 2>&1 || (
+grep modules-load=g_ether cmdline.txt > /dev/null 2>&1 || (
   CMDLINE=$(cat cmdline.txt)
-  echo "${CMDLINE}" | sed -e 's/rootwait/rootwait modules-load=dwc2,g_ether/' > cmdline.txt
+  echo "${CMDLINE}" | sed -e 's/rootwait/rootwait modules-load=g_ether/' > cmdline.txt
 )
 
 cd $DIR
