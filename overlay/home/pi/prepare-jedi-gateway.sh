@@ -81,6 +81,8 @@ sudo systemctl start coturn
 [ -f vpnserver/vpnserver ] || \
   (echo 1 ; echo 1 ; echo 1 ) | sudo make -C vpnserver
 
+sudo mkdir -p /opt/vpnserver
+
 [ -f /opt/vpnserver/hamcore.se2 ] || \
   sudo cp -a vpnserver/hamcore.se2 /opt/vpnserver/hamcore.se2
 
