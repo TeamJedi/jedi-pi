@@ -12,7 +12,7 @@ sudo -E apt-get update
 sudo -E apt-get dist-upgrade -y
 
 # Install dependencies
-sudo -E apt-get install -y git nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse uuid coturn npm
+sudo -E apt-get install -y git nodejs olsrd olsrd-plugins libpam-systemd python-pip jq fuse uuid coturn npm tinc avahi-autoipd
 
 # Install official fs-repo-migrations, go-ipfs, gx, ipfs-update, and ipget binaries: https://dist.ipfs.io
 
@@ -45,6 +45,9 @@ sudo systemctl disable cron.service
 sudo systemctl stop triggerhappy.service
 sudo systemctl disable triggerhappy.service
 
+# Bring up the wifi interface
+sudo ifup wlan0 || true
+
 # Make sure this pi user has access to manage user services
 sudo loginctl enable-linger pi
 #systemctl --user status || shutdown -r now
@@ -66,4 +69,28 @@ sudo cp -f /etc/default/coturn.overlay /etc/default/coturn
 
 sudo systemctl enable coturn || true
 sudo systemctl start coturn
+
+# Prepare softether vpn binaries
+[ -f softether-vpnserver-v4.20-9608-rtm-2016.04.17-linux-arm_eabi-32bit.tar.gz ] || \
+	wget http://www.softether-download.com/files/softether/v4.20-9608-rtm-2016.04.17-tree/Linux/SoftEther_VPN_Server/32bit_-_ARM_EABI/softether-vpnserver-v4.20-9608-rtm-2016.04.17-linux-arm_eabi-32bit.tar.gz
+
+[ -d vpnserver ] || (
+   tar xvzf softether-vpnserver-v4.20-9608-rtm-2016.04.17-linux-arm_eabi-32bit.tar.gz
+)
+
+[ -f vpnserver/vpnserver ] || \
+  (echo 1 ; echo 1 ; echo 1 ) | sudo make -C vpnserver
+
+[ -f /opt/vpnserver/hamcore.se2 ] || \
+  sudo cp -a vpnserver/hamcore.se2 /opt/vpnserver/hamcore.se2
+
+[ -f /opt/vpnserver/vpncmd ] || \
+  sudo cp -a vpnserver/vpncmd /opt/vpnserver/vpncmd
+
+[ -f /opt/vpnserver/vpnserver ] || \
+  sudo cp -a vpnserver/vpnserver /opt/vpnserver/vpnserver
+
+# Configure softether vpn
+# ./prepare-softether-vpn.sh
+
 

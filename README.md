@@ -1,6 +1,6 @@
 # jedi-pi
 
-## ethernet-gadget.sh
+## ethernet-device-mode.sh
 
 This script attempts to follow the PI zero OTG / ethernet gadget guide:
 
@@ -9,7 +9,25 @@ http://blog.gbaman.info/?p=791
 https://gist.github.com/gbaman/50b6cca61dd1c3f88f41
 https://gist.github.com/gbaman/975e2db164b3ca2b51ae11e45e8fd40a
 
-After running this script, you will have an img file that needs to be written to the micro-SD card of your choosing.
+After running this script, you will have a `*+device-mode.img` file that needs to be written to the micro-SD card of your choosing.
+
+This image can be used with a raspberry pi zero _without_ a USB HAT.
+
+This means you can connect your raspberry pi zero, alone, to a host machine doing internet sharing to the RNDIS interface, and it will be able to obtain an IP address that you can reach from that host machine.
+
+# ethernet-host-mode.sh
+
+This script automagically loads the `g_ether` device driver for a USB network connection, but does _not_ enable the device mode by loading the `dwc2` device driver.
+
+After running this script, you will have a `*+host-mode.img` file that needs to be written to the micro-SD card of your choosing.
+
+the jedi-pi project now has a `ethernet-device-mode.sh` script, and a `ethernet-host-mode.sh` script.
+
+The latter generates a `2016-09-23-raspbian-jessie-lite.img+host-mode.img` 
+
+This image can be used with a raspberry pi zero _with_ a USB HAT.
+
+This means that you can connect your raspberry pi zero with a USB HAT to a wifi connected android device that has USB tether enabled, and it will be able to obtain an IP address that you can reach from that phone (via `adb shell` over an `adb tcpip` connection).
 
 ## Flashing the disk image
 
@@ -28,7 +46,7 @@ We can unmount that filesystem, while still leaving the device attached (do not 
 
 Now we can _OVERWRITE_ the micro-SD card with the `dd` command.
 
-    sudo dd if=2016-09-23-raspbian-jessie-lite_ethernet-gadget.img of=/dev/disk3 bs=1M
+    sudo dd if=2016-09-23-raspbian-jessie-lite.img+device-mode.img of=/dev/disk3 bs=1M
 
 WARNING: Choose the `of=` device carefully. There is no recovery from this action.
 
